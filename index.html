@@ -32,7 +32,7 @@ const amt=(o,cid)=>o.order_items.reduce((t,i)=>t+i.qty*price(i.product_id,cid,o.
 
 /* ---------- đăng nhập & nạp dữ liệu ---------- */
 function login(){$('#v').innerHTML=`<div class=c><h3>Đăng nhập</h3><input id=u placeholder="Tên đăng nhập" autocapitalize=none><input id=pw type=password placeholder="Mật khẩu"><button onclick=doLogin()>Vào</button><div id=er class=R></div></div>`}
-async function doLogin(){const r=await db.auth.signInWithPassword({email:$('#u').value.trim().toLowerCase()+'@xuongbong.local',password:$('#pw').value});if(r.error)$('#er').textContent='Sai tên đăng nhập hoặc mật khẩu';else boot()}
+async function doLogin(){const r=await db.auth.signInWithPassword({email:$('#u').value.trim().toLowerCase()+'@xuongbong.local',password:$('#pw').value});if(r.error)$('#er').textContent=r.error.message;else boot()}
 async function boot(){const{data:{session}}=await db.auth.getSession();if(!session)return login();
  S.me=(await db.from('profiles').select('*').eq('id',session.user.id).single()).data;if(!S.me){$('#v').innerHTML='<div class=c>Tài khoản chưa có vai trò.</div>';return}
  await load();shell();go(S.tab)}
